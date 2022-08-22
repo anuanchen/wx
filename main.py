@@ -43,22 +43,6 @@ def get_words():
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
 
-#词霸每日一句
-def get_ciba():
-    if (Whether_Eng!="是"):
-        url = "http://open.iciba.com/dsapi/"
-        headers = {
-            'Content-Type': 'application/json',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-                        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
-        }
-        r = get(url, headers=headers)
-        note_en = r.json()["content"]
-        note_ch = r.json()["note"]
-        return note_ch, note_en
-    else:
-        return "",""
-
 
 #彩虹屁
 def caihongpi():
@@ -73,21 +57,6 @@ def caihongpi():
         data = data["newslist"][0]["content"]
         if("XXX" in data):
             data.replace("XXX","Oya")
-        return data
-    else:
-        return ""
-
-#健康小提示API
-def health():
-    if (health_API!="881f7875de906babe0a4f40ef212e829"):
-        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-        params = urllib.parse.urlencode({'key':health_API})
-        headers = {'Content-type':'application/x-www-form-urlencoded'}
-        conn.request('POST','/healthtip/index',params,headers)
-        res = conn.getresponse()
-        data = res.read()
-        data = json.loads(data)
-        data = data["newslist"][0]["content"]
         return data
     else:
         return ""
@@ -122,39 +91,17 @@ def lizhi():
         return ""
         
 
-#下雨概率和建议
-def tip():
-    if (tianqi_API!="881f7875de906babe0a4f40ef212e829"):
-        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-        params = urllib.parse.urlencode({'key':tianqi_API,'city':city})
-        headers = {'Content-type':'application/x-www-form-urlencoded'}
-        conn.request('POST','/tianqi/index',params,headers)
-        res = conn.getresponse()
-        data = res.read()
-        data = json.loads(data)
-        pop = data["newslist"][0]["pop"]
-        tips = data["newslist"][0]["tips"]
-        return pop,tips
-    else:
-        return "",""
-    
-    # 获取词霸每日金句
-    note_ch, note_en = get_ciba()
     #彩虹屁
     pipi = caihongpi()
-    #健康小提示
-    health_tip = health()
-    #下雨概率和建议
-    pop,tips = tip()
     #励志名言
     lizhi = lizhi()
     #星座运势
-    lucky_ = lucky()
+    lucky = lucky()
       
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
-data = {"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}, pipi, lizhi,pop,tips, note_en, note_ch, health_tip, lucky_}
+data = {"weather":{"value":wea,"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"love_days":{"value":get_count(),"color":get_random_color()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()},"pipi":{"value":caihongpi()}, "lizhi":{"value":lizhi()},"lucky":{"value":lucky()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
