@@ -43,51 +43,10 @@ def get_words():
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
 
-
-#彩虹屁
-def caihongpi():
-    if (caihongpi_API!="88"):
-        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-        params = urllib.parse.urlencode({'key':caihongpi_API})
-        headers = {'Content-type':'application/x-www-form-urlencoded'}
-        conn.request('POST','/caihongpi/index',params,headers)
-        res = conn.getresponse()
-        data = res.read()
-        data = json.loads(data)
-        data = data["newslist"][0]["content"]
-        if("XXX" in data):
-            data.replace("XXX","Oya")
-        return data
-    else:
-        return ""
-
-#励志名言
-def lizhi():
-    if (lizhi_API!="881f7875de9"):
-        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-        params = urllib.parse.urlencode({'key':lizhi_API})
-        headers = {'Content-type':'application/x-www-form-urlencoded'}
-        conn.request('POST','/lzmy/index',params,headers)
-        res = conn.getresponse()
-        data = res.read()
-        data = json.loads(data)
-        return data["newslist"][0]["saying"]
-    else:
-        return ""
-        
-    #获取彩虹屁API
-    caihongpi_API=config["caihongpi_API"]
-    #获取励志古言API
-    lizhi_API=config["lizhi_API"]
-    #彩虹屁
-    pipi = caihongpi()
-    #励志名言
-    lizhi = lizhi()
-    
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
-data = {"weather":{"value":wea,"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"love_days":{"value":get_count(),"color":get_random_color()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()},"pipi":{"value":caihongpi()}, "lizhi":{"value":lizhi()},"lucky":{"value":lucky()}}
+data = {"weather":{"value":wea,"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"love_days":{"value":get_count(),"color":get_random_color()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
