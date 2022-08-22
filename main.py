@@ -46,7 +46,7 @@ def get_random_color():
 
 #彩虹屁
 def caihongpi():
-    if (caihongpi_API="881f7875de906babe0a4f40ef212e829"):
+    if (caihongpi_API!="88"):
         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
         params = urllib.parse.urlencode({'key':caihongpi_API})
         headers = {'Content-type':'application/x-www-form-urlencoded'}
@@ -63,7 +63,7 @@ def caihongpi():
 
 #励志名言
 def lizhi():
-    if (lizhi_API="881f7875de906babe0a4f40ef212e829"):
+    if (lizhi_API!="881f7875de9"):
         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
         params = urllib.parse.urlencode({'key':lizhi_API})
         headers = {'Content-type':'application/x-www-form-urlencoded'}
