@@ -46,7 +46,7 @@ def get_random_color():
 
 #彩虹屁
 def caihongpi():
-    if (caihongpi_API!="881f7875de906babe0a4f40ef212e829"):
+    if (caihongpi_API="881f7875de906babe0a4f40ef212e829"):
         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
         params = urllib.parse.urlencode({'key':caihongpi_API})
         headers = {'Content-type':'application/x-www-form-urlencoded'}
@@ -61,24 +61,9 @@ def caihongpi():
     else:
         return ""
 
-#星座运势
-def lucky():
-    if (lucky_API!="881f7875de906babe0a4f40ef212e829"):
-        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-        params = urllib.parse.urlencode({'key':lucky_API,'astro':astro})
-        headers = {'Content-type':'application/x-www-form-urlencoded'}
-        conn.request('POST','/star/index',params,headers)
-        res = conn.getresponse()
-        data = res.read()
-        data = json.loads(data)
-        data = "爱情指数："+str(data["newslist"][1]["content"])+"\n速配星座："+str(data["newslist"][7]["content"])+"\n工作指数："+str(data["newslist"][2]["content"])+"\n今日概述："+str(data["newslist"][8]["content"])
-        return data
-    else:
-        return ""
-
 #励志名言
 def lizhi():
-    if (lizhi_API!="881f7875de906babe0a4f40ef212e829"):
+    if (lizhi_API="881f7875de906babe0a4f40ef212e829"):
         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
         params = urllib.parse.urlencode({'key':lizhi_API})
         headers = {'Content-type':'application/x-www-form-urlencoded'}
@@ -90,14 +75,15 @@ def lizhi():
     else:
         return ""
         
-
+    #获取彩虹屁API
+    caihongpi_API=config["caihongpi_API"]
+    #获取励志古言API
+    lizhi_API=config["lizhi_API"]
     #彩虹屁
     pipi = caihongpi()
     #励志名言
     lizhi = lizhi()
-    #星座运势
-    lucky = lucky()
-      
+    
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
